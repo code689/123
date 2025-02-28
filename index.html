@@ -1,0 +1,674 @@
+admins={"Tigrounette", "Melibellule", "Mousetat"}
+-- remember to put "," between each name!
+ 
+ 
+tfm.exec.disableAutoNewGame(true)
+tfm.exec.disableAfkDeath(true)
+tfm.exec.disableAutoShaman(true)
+tfm.exec.disableAutoScore(true)
+tfm.exec.newGame("@6411544")
+ 
+players={}--respawn place is 400,320
+p={}
+timestamp=os.time()
+numplayers=0
+ 
+begin=false
+answerer="lol"
+questioner="lol"
+question="lol"
+ans="lol"
+new=false
+restart=false
+choose=false
+start=true
+choosey=false
+skip=false
+message=""
+others={}
+summonobject=false
+timestamplol={}
+answererold=""
+one=false
+dance=false
+mapcomplete=false
+ 
+truth={}--you can follow the format 'truth[number]="question"' 
+truth[1]="谁是你在这个游戏中的迷恋？"
+truth[2]="你最喜欢什么食物？"
+truth[3]="你在游戏中的模特/最喜欢的人是谁？"
+truth[4]="除了Transformice，你还玩什么游戏？"
+truth[5]="你长大后想成为什么样的人？"
+truth[6]="你以前吸过拇指吗？"
+truth[7]="你目前的手机是什么牌子的？"
+truth[8]="你在现实生活中有没有在朋友或老师面前放过屁？"
+truth[9]="如果你能破解transformice，你会怎么做？"
+truth[10]="如果必须选择，你最喜欢 Transformice 中的什么毛皮？"
+truth[11]="你为什么喜欢变形金刚？"
+truth[12]="你最不喜欢/最讨厌自己的什么，无论是性格还是身体方面？"
+truth[13]="你最喜欢自己的什么，无论是性格还是身体方面？"
+truth[14]="告诉我们你是更爱自己还是更讨厌/不喜欢自己，并告诉我们原因。"
+truth[15]="你为什么喜欢现实生活中现在的迷恋，无论是性格还是身体方面？"
+truth[16]="告诉我们你为什么讨厌现实生活中你现在讨厌的人，从性格角度来说。"
+truth[17]="如果你有无限量的奶酪和薯条，你会从商店买什么东西？"
+truth[18]="你会选择哪一个，释放百万现金还是长寿？"
+truth[19]="你最喜欢的棋盘游戏是什么？"
+truth[20]="你最长不洗澡的时间是多久？"
+truth[21]="你以前吃过昆虫吗？"
+truth[22]="如果你可以成为任何超级反派，你会是谁？"
+truth[23]="如果你可以成为任何超级英雄，你会是谁？"
+truth[24]="如果你可以成为一只昆虫，你会是什么？"
+truth[25]="谁是你最喜欢的员工？(Admin/Moderator/Sentinels/Mapcrew/Funcorp)"
+truth[26]="你对我的印象是什么？你喜欢我吗？"
+truth[27]="你有没有在任何考试中作弊？"
+truth[28]="你有几个男朋友/女朋友？"
+truth[29]="如果你是亿万富翁，你会花时间做什么？"
+truth[30]="如果有一天你可以成为一家公司的老板，你会怎么做？"
+truth[31]="你对哪个名人很着迷？"
+truth[32]="你最喜欢的运动队/运动员是什么？"
+truth[32]="你最喜欢的歌曲是哪一首？"
+truth[33]="如果你在一个岛上只有一个人和你自己，你希望这个人是谁？（这个人必须在这个房间里）"
+truth[34]="如果你可以在这个房间里结婚、亲吻、拥抱、拳打和杀人，他们会是谁？（如果老鼠少于 5 只，你可以重复名字）"
+truth[35]="宁愿富有但愚蠢，还是贫穷但聪明？"
+truth[36]="你更接近你的母亲还是你的父亲？"
+truth[37]="除了你的灵魂伴侣，你还喜欢其他人吗？如果喜欢，谁？"
+truth[38]="在现实生活中或tfm中是否有多个暗恋？如果是，您有多少？如果他们在tfm中，他们是谁？？"
+
+dare={}--you can follow the format 'dare[number]="Dare"' 
+dare[1]="我賭让你进入 EN/EN2 房间 2 并发送此消息 10 次：CHARLOTTE CHARLOTTE CHARLOTTE CHARLOTTE CHARLOTTE CHARLOTTE CHARLOTTE CHARLOTTE"
+dare[2]="我賭你对版主说脏话。"
+dare[3]="我賭告诉你的暗恋对象，或者这个房间里的任何人，你现在爱他/她"
+dare[4]="我賭让你进入 EN/EN2 房间 1 并发送 10 次垃圾邮件：I'm Flooding REPORT ME！"
+dare[5]="我賭你举报一个版主的黑客行为"
+dare[6]="我賭在这个房间里使用你库存中的所有烟花！"
+dare[7]="我賭在聊天中告诉每个人你的真名"
+dare[8]="我賭你拍一张你真实的脸，然后发给大家看。"
+dare[9]="我賭你进入任何一个至少有 3 人的#utility 房间，然后把房间撞坏。"
+dare[10]="如果你有的话，我敢给我，提问者，你库存中的每一个球。"
+dare[11]="我賭让你立即断开连接并重新连接。"
+dare[12]="我賭说，在我们所在的这个房间里，你最有可能迷恋谁。"
+dare[13]="我賭你现在把你所有的自拍照都给我，如果你有胆量通过交易来做的话"
+dare[14]="我賭你不作弊就完成这张地图！"
+dare[15]="我賭在房间聊天或部落聊天中对房间/部落中的用户名输入“我爱你（用户名）”30 次。"
+dare[16]="我賭你吻我，提问者，20 次 :)"
+dare[17]="我賭你嫁给你最亲密的朋友，如果你还没有结婚的话"
+dare[18]="我賭你给我，提问者，你库存中的每一个雪球，如果你有的话。"
+dare[19]="我賭你对版主低声说，'禁止我！'"
+dare[20]="我賭在房间里亲吻和拥抱同性的人"
+dare[21]="我賭让你发垃圾邮件'我是个愚蠢的懦夫！' 在这个房间聊天10次"
+dare[22]="我賭你向你的暗恋对象约会。"
+dare[23]="我賭你向版主发送 10 次垃圾邮件，“嘿，<版主的名字>，我是爸爸”"
+dare[24]="我賭你去 EN/EN2 的房间并输入 'I WANT WAFFLES' 5 次。"
+dare[25]="我賭你去咖啡馆创造一个话题：'I LOVE UNDERTALE'"
+dare[26]="我賭你去 /room village1 并对那里的一个随机人说，'天哪，我爱你（插入随机人的名字）朋友我，我一直想见你，天啊！！！ *-*'"
+dare[27]="如果你有能力踢出部落的人，我敢你踢出部落中的某个人，然后再邀请他回来。 如果你没有权力，我敢让你离开部落并请人邀请你回来。"
+ 
+function eventNewPlayer(name)
+    ui.addTextArea(1,"<b><p align = 'center'><font size='30'>Type !join to join the game.</font></p></b>",name,50,365,700,40,0x324650,0x212F36,0.8,true)
+    ui.addPopup(999,0,"<p align = 'center'><font size='40' face='impact'>Truth or Dare</font></p><font size='20' color='#FF0000'><b>About the game</b></font><font size='15'>\nEvery game, everyone will have the chance to be the Asker. On the first popup as an asker, u can click 'Yes' to randomize a answerer, or 'No' to type a particular person in room. This is similar for almost all other popups, where 'Yes' is for random and 'No' is for typing out yourself. If you are the asker, you can also type '#(number)' to give the question number of the truth/dare in the random list. There are currently <b>"..#truth.."</b> random truths and <b>"..#dare.."</b> random dares, so if you have any feedback feel free to tell me.\n<font color='#00FF00'>Created by Mousetat</font> \nForum Thread: atelier801.com//topic?f=6&t=814350&p=1 \n</font><font face='impact' size='30'>輸入 !commands 查看命令列表</font>",name,100,50,600,true)
+    p[name]={questioners=false, admin=false, spectator=true, ban=false, randomerino=1, out=false, new=false}
+    local i=0
+    while i<=#admins do
+    if name==admins[i] then
+        p[name].admin=true
+    end
+    i=i+1
+    end
+end
+ 
+function eventNewGame()
+    ui.addTextArea(1,"<b><p align = 'center'><font size='30'>欢迎来到真心话大冒险游戏！</font></p></b>",nil,50,365,700,40,0x324650,0x212F36,0.8,true)
+    ui.addPopup(999,0,"<p align = 'center'><font size='40' face='impact'>真心话大冒险</font></p><font size='20' color='#FF0000'><b>关于游戏</b></font><font size='15'>\nEvery game, everyone will have the chance to be the Asker. On the first popup as an asker, u can click 'Yes' to randomize a answerer, or 'No' to type a particular person in room. This is similar for almost all other popups, where 'Yes' is for random and 'No' is for typing out yourself. If you are the asker, you can also type '#(number)' to give the question number of the truth/dare in the random list. There are currently <b>"..#truth.."</b> random truths and <b>"..#dare.."</b> random dares, so if you have any feedback feel free to tell me.\n<font color='#00FF00'>Created by Mousetat</font> \nForum Thread: atelier801.com//topic?f=6&t=814350&p=1 \n</font><font face='impact' size='30'>Type !commands to see the list of commands</font>",nil,100,50,600,true)
+    answerer=""
+    questioner=""
+    begin=false
+    start=true
+    numplayers=0
+    count=1
+    one=false
+    local i=0
+    for name,player in pairs(tfm.get.room.playerList) do
+        p[name]={questioners=false, admin=false, spectator=true, ban=false, randomerino=1, out=false, new=false}
+        players[count]=name
+        timestamp=os.time()
+        numplayers=numplayers+1
+        count=count+1
+        p[name].spectator=false
+        p[name].questioners=false
+        local i=0
+        while i<=#admins do
+        if name==admins[i] then
+            p[name].admin=true
+        end
+        i=i+1
+        end
+    end
+    system.disableChatCommandDisplay("t", hidden)
+    system.disableChatCommandDisplay("admin", hidden)
+    system.disableChatCommandDisplay("restart", hidden)
+    system.disableChatCommandDisplay("ban", hidden)
+    system.disableChatCommandDisplay("skip", hidden)
+    system.disableChatCommandDisplay("watch", hidden)
+    system.disableChatCommandDisplay("unban", hidden)
+    system.disableChatCommandDisplay("unadmin", hidden)
+    end
+ 
+function eventChatCommand(name,command)
+    local IDList = {}
+    if command=="clear" then
+        for id, object in pairs(tfm.get.room.objectList) do 
+            table.insert(IDList, id)
+        end
+        for i, id in pairs(IDList) do
+            tfm.exec.removeObject(id)
+        end
+    end
+    if command=="s" and p[name].admin==true then
+        tfm.exec.setShaman(name)
+    elseif command=="dance" and p[name].admin==true then
+        for name,player in pairs(tfm.get.room.playerList) do
+            p[name].randomerino=math.random(1,3)
+        end
+        dance=true
+    elseif command=="danceoff" and p[name].admin==true then
+        dance=false
+    elseif command=="mods" then
+        message=""
+        for k,v in pairs(tfm.get.room.playerList) do
+            if p[k].admin==true then
+                message=message..tostring(k)..", "
+            end
+        end
+    ui.updateTextArea(1, "<p align='center'><b><font size='15'>The moderators are: "..string.sub(message,1,-3)..".</font></b></p>", name)
+    elseif command=="new" and name==questioner then
+        if p[name].new==false then
+        print("true")
+        tfm.exec.movePlayer(answerer,400,320,false,0,0,false)
+        answererold=answerer
+        answerer=""
+        choose=true
+        p[name].new=true
+        else
+        ui.updateTextArea(1, "<p align='center'><b><font size='30'>You can only !new ONCE</font></b></p>", nil)
+        end
+    elseif command=="join" and p[name].spectator==true then
+        if p[name].ban==false then
+            ui.updateTextArea(1, "<p align='center'><b><font size='30'>"..name.." joined the game! :D</font></b></p>", nil)
+            tfm.exec.respawnPlayer(name)
+            tfm.exec.movePlayer(name,400,320,false,0,0,false)
+            p[name].spectator=false
+            table.insert(players,name)
+        elseif p[name].ban==true then
+            ui.updateTextArea(1, "<p align='center'><b><font size='30'>You have been banned, so u cannot join the game :(</font></b></p>", name)
+        end
+    elseif command=="skip" and p[name].admin==true then
+        timestamp=os.time()
+        skip=true
+    elseif string.sub(command,0,1) == "t" and p[name].admin==true then
+        message=string.sub(command,3)
+        ui.updateTextArea(1, "<p align='center'><b><font size='15' color='#ED67EA'>[~#T/D Moderation] "..message.."</font></b></p>", nil)
+    elseif command=="restart" and p[name].admin==true then
+        tfm.exec.newGame("@6411544")
+    elseif string.sub(command,0,5)=="watch"  then
+        if string.sub(command,7)=="" then
+            p[name].spectator=true
+                ui.updateTextArea(1, "<p align='center'><b><font size='30'>"..name.." is now a spectator :(</font></b></p>", nil)
+                ui.updateTextArea(1,"<b><p align = 'center'><font size='30'>Type !join to join the game.</font></p></b>",name)
+            if name==questioner or name==answerer then
+                questioner=""
+                answerer=""
+                tfm.exec.movePlayer(questioner,400,320,false,0,0,false)
+                tfm.exec.movePlayer(answerer,400,320,false,0,0,false)
+                timestamp=os.time()
+                skip=true
+            end
+            for i=1,#players do
+                if players[i]==name then 
+                    table.remove(players,i)
+                end
+            end
+        else
+            if p[name].admin==true then
+                message=string.sub(command,7)
+                message=string.upper(string.sub(message,0,1))..string.sub(message,2)
+                for k,v in pairs(tfm.get.room.playerList) do
+                    if k==message and p[k].spectator==false then
+                        if k==questioner or k==answerer then
+                            skip=true
+                            timestamp=os.time()
+                        end
+                        p[k].spectator=true
+                        ui.updateTextArea(1, "<p align='center'><b><font size='30'>"..k.." is now a spectator :(</font></b></p>", nil)
+                        ui.updateTextArea(1,"<b><p align = 'center'><font size='30'>Type !join to join the game.</font></p></b>",k)
+                        for i=1,#players do
+                            if players[i]==k then 
+                                table.remove(players,i)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    elseif command=="help" then
+        ui.addPopup(999,0,"<p align = 'center'><font size='40' face='impact'>Truth or Dare</font></p><font size='20' color='#FF0000'><b>About the game</b></font><font size='15'>\nEvery game, everyone will have the chance to be the Asker. On the first popup as an asker, u can click 'Yes' to randomize a answerer, or 'No' to type a particular person in room. This is similar for almost all other popups, where 'Yes' is for random and 'No' is for typing out yourself. If you are the asker, you can also type '#(number)' to give the question number of the truth/dare in the random list. There are currently <b>"..#truth.."</b> random truths and <b>"..#dare.."</b> random dares, so if you have any feedback feel free to tell me.\n<font color='#00FF00'>Created by Mousetat</font> \nForum Thread: atelier801.com//topic?f=6&t=814350&p=1 \n</font><font face='impact' size='30'>Type !commands to see the list of commands</font>",name,100,50,600,true)
+    elseif command=="commands" then
+    if p[name].admin==true then
+    ui.addPopup(999,0,"<b><font size='20' color='#FFFF00'>COMMANDS</font>\n!join to join the game if you are spectating or you just came into the room.\n!watch to be a spectator and get ignored in the game.\n!mods to see the current moderators in the room.\n!clear to clear all shaman objects.\n!new to get a new answerer(only new ONCE)(asker only)\n!help to see the information about game\n<font size='20' color='#EB1D51'>ADMIN COMMANDS</font>\n!watch (username) to make the username a spectator.\n!s to become shaman\n!admin (username) to admin a person\n!dance/!danceoff to toggle dancing\n!t (message) to speak to all\n!restart to restart game if bugged\n!skip to skip a person's turn\n!ban (username) (reason) to ban a person(highly not advised)</b>",name,100,50,600,true)
+    elseif p[name].admin==false then
+    ui.addPopup(999,0,"<b><font size='20' color='#FFFF00'>COMMANDS</font>\n!join to join the game if you are spectating or you just came into the room.\n!watch to be a spectator and get ignored in the game.\n!mods to see the current moderators in the room.\n!clear to clear all shaman objects.\n!new to get a new answerer(only new ONCE)(asker only)\n!help to see the information about game",name,100,50,600,true)
+    end
+    elseif string.sub(command,0,3)=="ban" and p[name].admin==true then
+        local c=0
+        local reason=""
+        if string.find(command," ",5)==nil then 
+            message=string.sub(command,5)
+        else
+            c=string.find(command," ",5)
+            print(c)
+            message=string.sub(command,5,c-1)
+            reason=string.sub(command,c+1)
+            print(reason)
+        end
+        message=string.upper(string.sub(message,0,1))..string.sub(message,2)
+        for k,v in pairs(tfm.get.room.playerList) do
+            if message==k then
+                ui.updateTextArea(1, "<p align='center'><b><font size='15' color='#ED67EA'>[~#T/D Moderation] "..message.." has been banned for 9999 hours. Reason: "..reason.."</font></b></p>", nil)
+                p[message].ban=true
+                tfm.exec.killPlayer(k)
+                for i=1,#players do
+                    if players[i]==k then 
+                        table.remove(players,i)
+                    end
+                end
+            end
+        end
+    elseif string.sub(command,0,5)=="unban" and p[name].admin==true then
+        message=string.sub(command,7)
+        message=string.upper(string.sub(message,0,1))..string.sub(message,2)
+        for k,v in pairs(tfm.get.room.playerList) do
+            if message==k then
+                ui.updateTextArea(1, "<p align='center'><b><font size='15' color='#ED67EA'>[~#T/D Moderation] "..message.." has been unbanned.</font></b></p>", nil)
+                p[message].ban=false
+                tfm.exec.respawnPlayer(k)
+                table.insert(players,k)
+            end
+        end
+    elseif string.sub(command,0,5)=="admin" and p[name].admin==true then
+        message=string.sub(command,7)
+        message=string.upper(string.sub(message,0,1))..string.sub(message,2)
+        for k,v in pairs(tfm.get.room.playerList) do
+            if message==k then
+                ui.updateTextArea(1, "<p align='center'><b><font size='15' color='#ED67EA'>[~#T/D Moderation] "..message.." is now a moderator. Congrats!</font></b></p>", nil)
+                p[message].admin=true
+            end
+        end
+    elseif string.sub(command,0,7)=="unadmin" and p[name].admin==true then
+        message=string.sub(command,9)
+        message=string.upper(string.sub(message,0,1))..string.sub(message,2)
+        for k,v in pairs(tfm.get.room.playerList) do
+            if message==k then
+                ui.updateTextArea(1, "<p align='center'><b><font size='15' color='#ED67EA'>[~#T/D Moderation] "..message.." is demoded. What a waste!</font></b></p>", nil)
+                p[message].admin=false
+            end
+        end
+    end
+end
+ 
+function eventLoop(time,remaining)
+    if time>1000 then
+    if dance==true then
+        for name,player in pairs(tfm.get.room.playerList) do
+            if p[name].randomerino==1 then
+                tfm.exec.playEmote(name,0,nil)
+            elseif p[name].randomerino==2 then
+                tfm.exec.playEmote(name,15,nil)
+            elseif p[name].randomerino==3 then
+                tfm.exec.playEmote(name,16,nil)
+            end
+        end
+    end
+    numplayers=#players
+    for k,v in pairs(tfm.get.room.playerList) do
+        if p[k].ban==true then
+            ui.updateTextArea(1,"<b><p align = 'center'><font size='30'>You have been banned. :(</font></p></b>",k)
+        elseif p[k].spectator==true then
+            ui.updateTextArea(1,"<b><p align = 'center'><font size='30'>Type !join to join the game.</font></p></b>",k)
+        end
+    end
+    local IDList={}
+    for id, object in pairs(tfm.get.room.objectList) do 
+        table.insert(IDList, id)
+    end
+    for i, id in pairs(IDList) do
+        if others[id].summonobject==true and timestamplol[id]<os.time()-3000 then
+            tfm.exec.removeObject(id)
+            others[id].summonobject=false
+        end
+    end
+    if numplayers<2 then
+        one=true
+    else
+        one=false
+    end
+    if one==true then
+        ui.updateTextArea(1, "<p align='center'><b><font size='15'>此游戏至少需要 2 名玩家才能进行。</font></b></p>", nil)
+        timestamp=os.time()-4000
+    elseif timestamp < os.time()-10000 and begin==false then
+        timestamp=os.time()
+        begin=true
+        restart=false
+        ui.updateTextArea(1, "<p align='center'><b><font size='30'>让我们开始游戏吧！ </font></b></p>", nil)
+        for name,player in pairs(tfm.get.room.playerList) do
+            tfm.exec.movePlayer(name,400,320,false,0,0,false)
+        end
+    elseif timestamp < os.time()-5000 and begin==false then
+        local i=1
+        local long=""
+        local hname=""
+        while i<=numplayers do
+            hname=players[i]
+            if p[hname].spectator==false and tfm.get.room.playerList[hname].isDead==false and p[hname].out==false then
+                long=long..tostring(players[i])..", "
+            end
+            i=i+1
+        end
+        ui.updateTextArea(1, "<p align='center'><b><font size='15'>参赛选手有： "..string.sub(long,1,-3)..".</font></b></p>", nil)
+    elseif timestamp < os.time()-3000 and begin==false and restart==true then
+        ui.updateTextArea(1, "<p align='center'><b><font size='20'>Since everyone had their turn, I'll restart the game...", nil)
+    end
+    if begin==true then
+        if timestamp < os.time()-3000 and start==true then
+            tfm.exec.movePlayer(questioner,400,320,false,0,0,false)
+            tfm.exec.movePlayer(answerer,400,320,false,0,0,false)
+            answerer=""
+            questioner=""
+            local j=1
+            local i=0
+            while j<=numplayers do
+                pname=players[j]
+                if p[pname].questioners==false and tfm.get.room.playerList[pname].isDead==false and p[pname].spectator==false and p[pname].out==false then
+                    i=i+1
+                end
+                j=j+1
+            end
+            if i>0 then
+                eventTruthOrDare()
+            else
+                local j=1
+            while j<=numplayers do
+                local name=players[j]
+                p[name].questioners=false
+                j=j+1
+            end
+            restart=true
+            timestamp=os.time()
+            begin=false
+        end
+    end
+    if choose==true and one==false then
+        rand=math.random(1,numplayers)
+        answerer=players[rand]
+        if questioner==answerer or tfm.get.room.playerList[answerer].isDead or p[answerer].spectator==true or answerer==answererold or p[answerer].out==true then
+            ui.updateTextArea(1, "<p align='center'><b><font size='30'>Randomizing...</font></b></p>", nil)
+            tfm.exec.movePlayer(answerer,400,320,false,0,0,false)
+            answerer=""
+        else
+            choose=false
+            ui.updateTextArea(1, "<b><font size='15'>"..answerer.." 现在是回答者！等待选择真心話或大冒險...</font></b>", nil)
+            ui.addPopup(3,1,"你是回答者！你想要真心話吗？如果没有，你会选择大冒險！",answerer,250,50,300,true)
+        end
+    elseif choosey==true and one==false then
+        rand=math.random(1,numplayers)
+        questioner=players[rand]
+        if p[questioner].questioners==false and tfm.get.room.playerList[questioner].isDead==false and p[questioner].spectator==false or p[questioner].out==false then
+            choosey=false
+            p[questioner].questioners=true
+            ui.updateTextArea(1, "<b><font size='15'>"..questioner.." 现在是提问者！ 等待选择答案...</font></b>", nil)
+            ui.addPopup(1,1,"你想要一个随机的回答者吗？如果<b>否</b>，您将必须输入您的回答者的用户名",questioner,250,50,300,true)
+        else 
+            ui.updateTextArea(1, "<p align='center'><b><font size='30'>随机抽人中...</font></b></p>", nil)
+            tfm.exec.movePlayer(questioner,400,320,false,0,0,false)
+            questioner=""
+        end
+    end
+    if skip==true then
+        ui.updateTextArea(1, "<p align='center'><b><font size='30'>Skipping turn...</font></b></p>", nil)
+        tfm.exec.movePlayer(questioner,400,320,false,0,0,false)
+        tfm.exec.movePlayer(answerer,400,320,false,0,0,false)
+        answerer=""
+        questioner=""
+        if timestamp < os.time()-3000 then
+            start=true
+            skip=false
+        end
+    end
+    tfm.exec.movePlayer(questioner,120,120,false,0,0,false)
+    tfm.exec.movePlayer(answerer,680,120,false,0,0,false)
+    end
+end
+end
+ 
+function eventTruthOrDare()
+    start=false
+    ui.removeTextArea(2)
+    ui.removeTextArea(3)
+    choosey=true
+end
+ 
+function eventPopupAnswer(id, name, answer)
+    if id==1 and name==questioner then
+        if answer=="yes" then
+            answererold=""
+            choose=true
+        elseif answer=="no" then
+            ui.addPopup(2,2,"你希望谁来回答？",questioner,250,50,300,true)
+        end
+    elseif id==2 and name==questioner then
+        x=1
+        found=false
+        answer=string.upper(string.sub(answer,0,1))..string.sub(answer,2)
+        answer=string.gsub(answer, "<", "&lt;")
+        answer=string.gsub(answer, "http", "")
+        while x<=numplayers do
+        print(players[x])
+            if answer==players[x] then
+            answerer=answer
+            if questioner==answerer or tfm.get.room.playerList[answerer].isDead or p[answerer].spectator==true or p[answerer].out==true then
+            answerer=""
+            found=false
+            else
+            ui.updateTextArea(1, "<b><font size='15'>"..answerer.." 现在是回答者！ 等待选择真心话大冒险...</font></b>", nil)
+            ui.addPopup(3,1,"You are the answerer! Do you want Truth? If <b>No</b>, you will choose Dare!",answerer,250,50,300,true)
+            found=true
+            end
+            end
+            x=x+1
+        end
+        if found==false then
+            ui.addPopup(2,2,"There is no such answerer in the room. Type out the exact username of your answerer.",questioner,250,50,300,true)
+        end
+    elseif id==3 and name==answerer then    
+        if answer=="yes" then
+            ui.updateTextArea(1, "<b><font size='15'>"..answerer.." 选择了真心話！等待来自 "..questioner.."的提问...</font></b>", nil)   
+            ui.addPopup(4,1,"你想要一个随机的真心話问题吗？如果<b>否</b>，您必须提交一个问题。",questioner,250,50,300,true)
+        elseif answer=="no" then
+            ui.updateTextArea(1, "<b><font size='15'>"..answerer.." 选择了大冒險！等待 "..questioner.."發問...</font></b>", nil)
+            ui.addPopup(5,1,"你想要一个随机的大冒險題目吗？如果<b>否</b>，您将必须提交一个大冒險題目。",questioner,250,50,300,true)
+                
+        end
+    elseif id==4 and name==questioner then
+        if answer=="yes" then
+            question=truth[math.random(1,#truth)]
+            ui.updateTextArea(1, "<b><font size='15'>"..questioner.." has randomed a Truth question! Waiting for "..answerer.." to respond...</font></b>", nil) 
+            ui.addTextArea(2,"<b><font size='20'>題目: "..question.."</font></b>",nil,165,20,470,120,0x324650,0x212F36,0.8,true)
+            ui.addPopup(8,2,"<b>在下面输入你的真实答案</b>",answerer,250,175,300,true)
+            
+        elseif answer=="no" then
+            ui.addPopup(6,2,"在下方输入您的真心話題目，或从随机列表中输入#(number) 作为问题编号。",questioner,250,50,300,true)
+        end
+    elseif id==5 and name==questioner then
+        if answer=="yes" then
+            question=dare[math.random(1,#dare)]
+            ui.updateTextArea(1, "<b><font size='15'>"..questioner.." 随机选择了一个 Dare 问题！ 等待 "..answerer.." 回复...</font></b>", nil)  
+            ui.addTextArea(2,"<b><font size='20'>Dare: "..question.."</font></b>",nil,165,20,470,120,0x324650,0x212F36,0.8,true)
+            ui.addPopup(9,1,"<b><font size='15'>Do what "..questioner.."dares you to do! If you click 'yes' you will promise that you will do your dare!</font><b>",answerer,250,175,300,true)
+        elseif answer=="no" then
+            ui.addPopup(7,2,"Type your Dare below, or type #(number) for the dare number from the random list.",questioner,250,50,300,true)
+        end
+    elseif id==6 and name==questioner then
+        answer=string.gsub(answer, "<", "&lt;")
+        answer=string.gsub(answer, "http", "")
+        if answer=="" then
+        ui.addPopup(6,2,"You have to type something as your Truth question.",questioner,250,50,300,true)
+        elseif string.sub(answer,0,1)=="#" and tonumber(string.sub(answer,2,3))<=#truth then
+        question=truth[tonumber(string.sub(answer,2,3))]
+        ui.updateTextArea(1, "<b><font size='15'>"..questioner.." has typed a Truth question! Waiting for "..answerer.." to respond...</font></b>", nil)    
+        ui.addTextArea(2,"<b><font size='20'>題目: "..question.."</font></b>",nil,165,20,470,120,0x324650,0x212F36,0.8,true)
+        ui.addPopup(8,2,"Type your Truth answer below",answerer,250,175,300,true)
+        elseif string.sub(answer,0,1)=="#" and tonumber(string.sub(answer,2,3))>#truth then
+        ui.addPopup(6,2,"You have to type a Truth question number less than or equal to "..tostring(#truth),questioner,250,50,300,true)
+        else
+        question=answer
+        ui.updateTextArea(1, "<b><font size='15'>"..questioner.." has typed a Truth question! Waiting for "..answerer.." to respond...</font></b>", nil)    
+        ui.addTextArea(2,"<b><font size='20'>Truth: "..question.."</font></b>",nil,165,20,470,120,0x324650,0x212F36,0.8,true)
+        ui.addPopup(8,2,"Type your Truth answer below",answerer,250,175,300,true)
+        end
+    elseif id==7 and name==questioner then
+        answer=string.gsub(answer, "<", "&lt;")
+        answer=string.gsub(answer, "http", "")
+        if answer=="" then
+            ui.addPopup(7,2,"You have to type something as your Dare.",questioner,250,50,300,true)
+        elseif string.sub(answer,0,1)=="#" and tonumber(string.sub(answer,2,3))<=#dare then
+            if tonumber(string.sub(answer,2,3))==14 then
+            mapcomplete=true
+            end
+            question=dare[tonumber(string.sub(answer,2,3))]
+            ui.updateTextArea(1, "<b><font size='15'>"..questioner.." has typed a Dare question! Waiting for "..answerer.." to respond...</font></b>", nil) 
+            ui.addTextArea(2,"<b><font size='15'>Dare: "..question.."</font></b>",nil,165,20,470,120,0x324650,0x212F36,0.8,true)
+            ui.addPopup(9,1,"<b><font size='15'>Do what "..questioner.."dares you to do! If you click 'yes' you will promise that you will do your dare!</font><b>",answerer,250,175,300,true)
+        elseif string.sub(answer,0,1)=="#" and tonumber(string.sub(answer,2,3))>#dare then
+        ui.addPopup(7,2,"You have to type a Dare number less than or equal to "..tostring(#dare),questioner,250,50,300,true)
+        else
+            question=answer
+            ui.updateTextArea(1, "<b><font size='15'>"..questioner.." has typed a Dare question! Waiting for "..answerer.." to respond...</font></b>", nil) 
+            ui.addTextArea(2,"<b><font size='15'>Dare: "..question.."</font></b>",nil,165,20,470,120,0x324650,0x212F36,0.8,true)
+            ui.addPopup(9,1,"<b><font size='15'>Do what "..questioner.."dares you to do! If you click 'yes' you will promise that you will do your dare!</font><b>",answerer,250,175,300,true)
+        end
+    elseif id==8 and name==answerer then
+        answer=string.gsub(answer, "<", "&lt;")
+        answer=string.gsub(answer, "http", "")
+        ans = answer
+        if ans=="" then
+        ui.addPopup(8,2,"You have to type something as your Truth Answer",answerer,250,175,300,true)
+        else
+        ui.addTextArea(3,"<b><font size='20'>回答: "..ans.."</font></b>",nil,165,140,470,120,0x324650,0x212F36,0.8,true)
+        ui.updateTextArea(1, "<b><font size='15'>"..answerer.." 已回答问题！ 等待“..questioner..”来评价答案</font></b>", nil)    
+        ui.addPopup(10,1,"<b><font size='15'>你对答案满意吗？",questioner,250,50,300,true)
+        end
+    elseif id==9 and name==answerer then
+        if answer=="yes" then
+            ui.addTextArea(3,"<b><font size='20'>I, "..answerer..", accepts the challenge and promises to do the dare.</font></b>",nil,165,140,470,120,0x324650,0x212F36,0.8,true)
+            if mapcomplete==true then
+            ui.updateTextArea(1, "<b><font size='15'>"..answerer.." is a warrior! He/she will have to complete the map before entering the game. Starting new game...</font></b>", nil) 
+            p[answerer].out=true
+            mapcomplete=false
+            for i=1,#players do
+                if players[i]==answerer then 
+                    table.remove(players,i)
+                end
+            end
+            else
+            ui.updateTextArea(1, "<b><font size='15'>"..answerer.." is a warrior! Starting new game...</font></b>", nil)    
+            end
+            timestamp=os.time()
+            answerer=""
+            questioner=""
+            start=true
+            for name,player in pairs(tfm.get.room.playerList) do
+            tfm.exec.movePlayer(name,400,320,false,0,0,false)
+            p[name].new=false
+            print("false")
+            end         
+        elseif answer=="no" then
+            mapcomplete=false
+            ui.updateTextArea(1, "<b><font size='15'>"..answerer.." is a coward! Starting new game...</font></b>", nil) 
+            ui.addTextArea(3,"<b><font size='20'>I, "..answerer..", am a coward so I don't dare to do what you dared me to do.</font></b>",nil,165,140,470,120,0x324650,0x212F36,0.8,true)
+            timestamp=os.time()
+            answerer=""
+            questioner=""
+            start=true
+            for name,player in pairs(tfm.get.room.playerList) do
+            tfm.exec.movePlayer(name,400,320,false,0,0,false)
+            p[name].new=false
+            print("false")
+            end         
+        end
+    elseif id==10 and name==questioner then
+        if answer=="yes" then
+            ui.updateTextArea(1, "<b><font size='15'>"..questioner.." is a satisfied with the answer! Starting new game...</font></b>", nil)
+            timestamp=os.time()
+            answerer=""
+            questioner=""
+            start=true
+            for name,player in pairs(tfm.get.room.playerList) do
+            tfm.exec.movePlayer(name,400,320,false,0,0,false)
+            p[name].new=false
+            print("false")
+            end
+        elseif answer=="no" then
+            ui.updateTextArea(1, "<b><font size='15'>"..questioner.." 是一个不满意的答案...:( Starting new game...</font></b>", nil)
+            timestamp=os.time()
+            answerer=""
+            questioner=""
+            start=true          
+            for name,player in pairs(tfm.get.room.playerList) do
+            tfm.exec.movePlayer(name,400,320,false,0,0,false)
+            p[name].new=false
+            print("false")
+            end
+        end
+    end
+end
+ 
+function eventPlayerLeft(name)
+    ui.updateTextArea(1, "<p align='center'><b><font size='15'>"..name.." 离开了房间……真是个胆小鬼！</font></b></p>", nil)
+    if questioner==name or answerer==name then
+        timestamp=os.time()
+        skip=true
+    end
+    for i=1,#players do
+        if players[i]==name then 
+        table.remove(players,i)
+        end
+    end
+end
+ 
+function eventPlayerDied(name)
+    if p[name].spectator==false then
+        tfm.exec.respawnPlayer(name)
+    end
+    if p[name].ban==true then
+        tfm.exec.killPlayer(name)
+        if name==questioner or name==answerer then
+            timestamp=os.time()
+            skip=true
+        end
+    end
+end
+ 
+function eventPlayerWon(playerName,timeElapsed, timeElapsedSinceRespawn)
+tfm.exec.respawnPlayer(playerName)
+if p[playerName].out==true then
+p[playerName].out=false
+table.insert(players,playerName)
+print("yes")
+ui.updateTextArea(1, "<p align='center'><b><font size='15'>"..playerName.." completed the map in "..(timeElapsedSinceRespawn/100).." seconds! 他/她重新加入了游戏！</font></b></p>", nil)
+else
+ui.updateTextArea(1, "<p align='center'><b><font size='15'>"..playerName.." completed the map in "..(timeElapsedSinceRespawn/100).." seconds!</font></b></p>", nil)
+end
+end
+ 
+function eventSummoningEnd(playerName, objectType, xPosition, yPosition, angle, xSpeed, ySpeed, other)
+timestamplol[other.id]=os.time()
+others[other.id]={summonobject=true}
+end
